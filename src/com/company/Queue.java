@@ -16,6 +16,7 @@ public class Queue {
     public VirtualPackage pop(){
         return queue.pop();
     }
+
     public void push(VirtualPackage vp) throws FullQueueException{
         if (queue.size() == size) {
             throw new FullQueueException();
