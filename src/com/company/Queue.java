@@ -2,7 +2,9 @@ package com.company;
 
 import com.company.Exceptions.FullQueueException;
 
+import java.nio.file.NoSuchFileException;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class Queue {
     private LinkedList<VirtualPackage> queue;
@@ -13,8 +15,12 @@ public class Queue {
         this.size = size;
     }
 
-    public VirtualPackage pop(){
-        return queue.pop();
+    public VirtualPackage pop() {
+        try {
+            return queue.pop();
+        } catch(NoSuchElementException nsee) {
+            return null;
+        }
     }
 
     public void push(VirtualPackage vp) throws FullQueueException{
@@ -22,5 +28,13 @@ public class Queue {
             throw new FullQueueException();
         }
         queue.addLast(vp);
+    }
+
+    public VirtualPackage getFirst() {
+        return queue.getFirst();
+    }
+
+    public int size() {
+        return queue.size();
     }
 }
