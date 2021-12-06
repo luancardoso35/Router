@@ -2,17 +2,15 @@ package com.company;
 
 import com.company.Exceptions.FullQueueException;
 
-import java.nio.file.NoSuchFileException;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Queue {
     private LinkedList<VirtualPackage> queue;
     private int size;
 
-    public Queue(int size) {
-        queue = new LinkedList<>();
-        this.size = size;
+    public Queue(int limit) {
+        queue = new ConcurrentLinkedQueue<>();
+        this.limit = limit;
     }
 
     public VirtualPackage pop() {
@@ -23,15 +21,15 @@ public class Queue {
         }
     }
 
-    public void push(VirtualPackage vp) throws FullQueueException{
-        if (queue.size() == size) {
+    public void push(VirtualPackage vp) throws FullQueueException {
+        if (queue.size() == limit) {
             throw new FullQueueException();
         }
-        queue.addLast(vp);
+        queue.add(vp);
     }
 
     public VirtualPackage getFirst() {
-        return queue.getFirst();
+        return queue.peek();
     }
 
     public int size() {

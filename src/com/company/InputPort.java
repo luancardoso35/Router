@@ -47,6 +47,7 @@ public class InputPort extends Thread {
 
     private void generate_virtual_package() {
         VirtualPackage new_package = new VirtualPackage(this.port_id, this.count);
+        count++;
 
         double random_number = Math.random() * 100d;
         if (random_number < drop_probability) {

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class OutputPort extends Thread{
     private String port_id;
     private Queue virtual_package_queue;
@@ -16,6 +17,7 @@ public class OutputPort extends Thread{
     private ArrayList<String> relayed_packages;
     private ArrayList<String> sent_packages;
     private boolean interrupted = false;
+
 
     public OutputPort(String port_id, int size, double package_forward_probability,
                       long package_transmission_delay, double retransmission_probability) {
@@ -48,6 +50,10 @@ public class OutputPort extends Thread{
         if (virtual_package_queue.size() != 0) {
             if (random_number < success_probability) {
                 VirtualPackage virtual_package = virtual_package_queue.pop();
+                if (virtual_package == null) {
+                    System.out.println("x");
+                }
+                virtual_package.setLocalDateTime(java.time.LocalDateTime.now());
                 sent_packages.add(virtual_package.toString());
                 this.package_retransmission_probability = this.retransmission_probability;
             } else {

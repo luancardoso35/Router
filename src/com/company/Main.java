@@ -2,7 +2,6 @@ package com.company;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +24,8 @@ public class Main {
             commuting_element = create_commuting_element(sb, input_threads, output_threads);
             commuting_element.start();
         } else {
-            System.out.println("Arquivo de texto fora da formatação");
+            System.out.println("Arquivo de texto fora da formatação. Verifique os espaços, quebras de linha" +
+                    " e se não há nenhum número negativo.");
             System.exit(-1);
         }
         System.out.println("Digite s para sair");
@@ -68,7 +68,8 @@ public class Main {
             }
 
             if (sb.charAt(sb.length()-1) != '\n') {
-                System.out.println("Arquivo de texto fora da formatação");
+                System.out.println("Arquivo de texto fora da formatação. Verifique se há uma quebra" +
+                        " de linha no fim do arquivo.");
                 System.exit(-1);
             }
 
@@ -122,7 +123,7 @@ public class Main {
         for (int i = 1; i < lines.length; i++) {
             String[] values = lines[i].split(" ");
             if (values[0].equals("input:")) {
-                double drop_prob = Double.parseDouble(values[2]);
+                double drop_prob = Double.parseDouble(values[4]);
                 if (drop_prob > 100d) {
                     System.out.println("Probabilidade maior que 100%.");
                     System.exit(-1);
@@ -147,7 +148,7 @@ public class Main {
 
     private static CommutingElement create_commuting_element(StringBuilder sb, ArrayList<InputPort> input_threads,
                                                              ArrayList<OutputPort> output_threads) {
-        String first_line = sb.toString().split("\\n")[0];
+        String first_line = sb.toString().split("\\r?\\n")[0];
         return new CommutingElement(Long.parseLong(first_line.split(" ")[1]),
                 input_threads, output_threads);
     }
