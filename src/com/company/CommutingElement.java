@@ -30,7 +30,7 @@ public class CommutingElement extends Thread{
                     try {
                         sleep(switch_delay);
                     } catch (InterruptedException e) {
-
+                        System.out.println(e.getMessage());
                     }
                     output_threads.get(selected_output_port).insert_package(vp);
                 }

@@ -36,6 +36,7 @@ public class InputPort extends Thread {
                 sleep(package_generation_delay);
                 this.generate_virtual_package();
             } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
             }
         }
         writeLogs();
@@ -79,7 +80,7 @@ public class InputPort extends Thread {
                 fw3.write(s + "\n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Erro na escrita dos logs da porta de entrada.");
         }
     }
 
