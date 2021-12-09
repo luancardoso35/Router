@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 public class Main {
 
+    //Metodo main do programa
     public static void main(String[] args) {
         ArrayList<InputPort> input_threads = new ArrayList<>();
         ArrayList<OutputPort> output_threads = new ArrayList<>();
@@ -55,7 +56,12 @@ public class Main {
 
         System.exit(0);
     }
-    
+
+    /**
+     * Le o arquivo de configuracao do roteador
+     * @param filename  nome do arquivo
+     * @return string builder contendo o texto do arquivo
+     */
     private static StringBuilder readFile(String filename) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -83,6 +89,11 @@ public class Main {
         }
     }
 
+    /**
+     * Confere se o texto esta formatado corretamente
+     * @param sb string builder contendo o texto do arquivo passado
+     * @return true caso esteja formatado, false caso contrario
+     */
     private static boolean check_pattern(StringBuilder sb) {
         Pattern p = Pattern.compile("switch-fabric:\\s\\d+\\r?\\n[input:\\s\\w+(\\s\\d+((.|,)\\d+)?){3}\\r?\\n]+" +
                 "[output:\\s\\w+(\\s\\d+((\\.|,)\\d+)?){4}\\r?\\n]+");
@@ -90,6 +101,12 @@ public class Main {
         return m.matches();
     }
 
+    /**
+     * Inicializa as threads de input e output com base na especificacao de roteador recebida
+     * @param input_threads lista de portas de entrada
+     * @param output_threads lista de portas de saida
+     * @param sb texto contendo a descricao do roteador
+     */
     private static void create_threads(ArrayList<InputPort> input_threads, ArrayList<OutputPort> output_threads,
                                        StringBuilder sb){
         String[] lines = sb.toString().split("\\n");
@@ -116,7 +133,9 @@ public class Main {
         }
     }
 
-    //Confere se as probs sao validas
+    /**
+     * Confere se as probs somam 100%
+     */
     private static void check_probabilities(StringBuilder text) {
         double count = 0d;  //Confere se soma da 100
         String[] lines = text.toString().split("\\r?\\n");
@@ -146,6 +165,13 @@ public class Main {
         }
     }
 
+    /**
+     * Cria elemento comutador com base da especificacao recebida
+     * @param sb texto de especificacao do roteador
+     * @param input_threads lista de portas de entrada
+     * @param output_threads lista de portas de saida
+     * @return elemento comutador
+     */
     private static CommutingElement create_commuting_element(StringBuilder sb, ArrayList<InputPort> input_threads,
                                                              ArrayList<OutputPort> output_threads) {
         String first_line = sb.toString().split("\\r?\\n")[0];

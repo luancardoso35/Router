@@ -17,6 +17,13 @@ public class InputPort extends Thread {
     private ArrayList<String> full_queue_packages;
     private boolean interrupted = false;
 
+    /**
+     * Construtor do InputPort
+     * @param port_id id do InputPort
+     * @param queue_size tamanho da fila de pacotes de entrada
+     * @param drop_probability probabilidade de descarte de pacotes
+     * @param package_generation_delay tempo de geracao de pacotes
+     */
     public InputPort(String port_id, int queue_size, double drop_probability, int package_generation_delay){
         this.port_id = port_id;
         virtual_package_queue = new Queue(queue_size);
@@ -42,22 +49,33 @@ public class InputPort extends Thread {
         writeLogs();
     }
 
+    /**
+     * Metodo que retira um elemento da fila de entrada
+     * @return o primeiro pacote da fila de entrada
+     */
     protected VirtualPackage get_virtual_package() {
         return virtual_package_queue.pop();
     }
 
+    /**
+     * Cria pacotes e adiciona na fila, caso ela nao esteja cheia
+     */
     private void generate_virtual_package() {
         VirtualPackage new_package = new VirtualPackage(this.port_id, this.count);
         count++;
 
         double random_number = Math.random() * 100d;
+
+        //Caso haja erro, descarta o pacote e atualiza o log de pacotes descartados
         if (random_number < drop_probability) {
            discarded_packages.add(new_package.toString());
         } else {
+            //Caso o pacote nao seja descartado, atualiza o log de pacotes criados e adiciona na fila
             created_packages.add(new_package.toString());
             try {
                 virtual_package_queue.push(new_package);
             } catch (FullQueueException fqe) {
+                //Caso a fila esteja cheia, descarta o pacote e atualiza log de pacotes nao adicionados na fila cheia
                 full_queue_packages.add(new_package.toString());
             }
         }
